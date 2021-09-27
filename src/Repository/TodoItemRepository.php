@@ -18,30 +18,4 @@ class TodoItemRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TodoItem::class);
     }
-
-    // /**
-    //  * @return TodoItem[] Returns an array of TodoItem objects
-    //  */
-    public function getByAuthor($author)
-    {
-        return $this->createQueryBuilder('item')
-            ->andWhere('item.author = :author')
-            ->setParameter('author', $author)
-            ->orderBy('item.dateCreate', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /*
-    public function findOneBySomeField($value): ?TodoItem
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
