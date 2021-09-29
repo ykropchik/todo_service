@@ -88,10 +88,10 @@ class TodoItemController extends AbstractController
         $entityManager->persist($todoItem);
         $entityManager->flush();
 
-        return ($this->response([
+        return $this->response([
             'status' => Response::HTTP_OK,
             'success' => "Item added successfully",
-        ]));
+        ]);
     }
 
     /**
