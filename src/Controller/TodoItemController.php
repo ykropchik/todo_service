@@ -49,7 +49,7 @@ class TodoItemController extends AbstractController
         $username = $decodedToken['username'];
         $roles = $decodedToken['roles'];
 
-        $todoList = $todoItemRepository->findAll();
+        $todoList = $todoItemRepository->findBy(['author' => $username]);
 
         foreach ($todoList as $todoItem) {
             $array = [
