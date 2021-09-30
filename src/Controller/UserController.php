@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -38,7 +39,7 @@ class UserController extends AbstractController
     /**
      * @Route("/registration", name="user_registration", methods={"POST"})
      */
-    public function registration(Request $request, UserRepository $userRepository): Response
+    public function registration(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordEncoder): Response
     {
         $requestBody = $this->transformJsonBody($request);
         $username = $request->get('username');
@@ -66,8 +67,13 @@ class UserController extends AbstractController
         }
 
         $user = new User();
-        $user->setUsername($username);
-        $user->setPassword($password);
+        $user
+            ->setUsername($username)
+            ->setRoles(['ROLE_USER'])
+            ->setPassword($passwordEncoder->hashPassword(
+            $user,
+            $request->get('password')
+        ));
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
