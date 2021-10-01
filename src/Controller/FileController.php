@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use App\Encoder\NixillaJWTEncoder;
 
 /**
@@ -82,6 +84,51 @@ class FileController extends AbstractController
 
         $responsedFile = $this->getParameter('files_directory').'/'.$file->getSafeName();
         return new BinaryFileResponse($responsedFile);
+    }
+
+    /**
+     * @Route("/{id}", name="remove_file", methods={"DELETE"})
+     */
+    public function removeFile(Request $request, FileRepository $fileRepository, $id): Response
+    {
+        $token = $request->headers->get('JWT-Token');
+        $decodedToken = $this->jwtDecode($token);
+
+        $username = $decodedToken['username'];
+
+        $file = $fileRepository->findOneBy(['id' => $id]);
+
+        if(!$file) {
+            return $this->response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'success' => "Invalid file id",
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if($file->getAuthor() !== $username) {
+            return $this->response([
+                'status' => Response::HTTP_FORBIDDEN,
+                'success' => "Not authorized",
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $filesystem = new Filesystem();
+        try {
+            $filesystem->remove([$this->getParameter('files_directory').'/'.$file->getSafeName()]);
+        } catch (IOExceptionInterface $exception) {
+            return $this->response([
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'success' => "Something went wrong",
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($file);
+        $entityManager->flush();
+
+        return $this->response([
+            'status' => Response::HTTP_OK,
+            'success' => "Item removed successfully",
+        ]);
     }
 
     /**
