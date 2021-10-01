@@ -14,7 +14,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/registration',
+                CURLOPT_URL => $this->path.'/registration',
                 CURLOPT_HTTPHEADER => array('Content-type: application/json', 'Content-Length: '.strlen($data)),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
@@ -30,7 +30,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/api/login_check',
+                CURLOPT_URL => $this->path.'/api/login_check',
                 CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data)),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
@@ -45,7 +45,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/todo/',
+                CURLOPT_URL => $this->path.'/todo/',
                 CURLOPT_HTTPHEADER => array('JWT-Token: '.$jwt),
                 CURLOPT_CUSTOMREQUEST => 'GET'
             ));
@@ -60,7 +60,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/todo/',
+                CURLOPT_URL => $this->path.'/todo/',
                 CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$jwt),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
@@ -75,7 +75,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/todo/'.$id,
+                CURLOPT_URL => $this->path.'/todo/'.$id,
                 CURLOPT_HTTPHEADER => array('JWT-Token: '.$jwt),
                 CURLOPT_CUSTOMREQUEST => 'DELETE'
             ));
@@ -90,7 +90,7 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $path.'/todo/'.$id,
+                CURLOPT_URL => $this->path.'/todo/'.$id,
                 CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data)),
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_POSTFIELDS => $data
@@ -100,3 +100,6 @@ class TodoService {
         return $result;
     }
 }
+
+// $todoService = new TodoService("http://138.197.185.17");
+// echo $todoService->getTodoList("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
