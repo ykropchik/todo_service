@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\File;
 use App\Service\FileUploader;
+use App\Repository\FileRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Encoder\NixillaJWTEncoder;
 
 /**
@@ -28,37 +30,71 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/", name="get_file", method={"GET"})
+     * @Route("/", name="get_files_list", methods={"GET"})
      */
-    public function getFiles(Request $request): Response
+    public function getFilesList(Request $request, FileRepository $fileRepository): Response
     {
-        return $this->render('file/index.html.twig', [
-            'controller_name' => 'FileController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="get_file", method={"GET"})
-     */
-    public function getFile(Request $request, $id): Response
-    {
-        return $this->render('file/index.html.twig', [
-            'controller_name' => 'FileController',
-        ]);
-    }
-
-    /**
-     * @Route("/", name="upload_file", method={"POST"})
-     */
-    public function uploadFile(Request $request, FileUploader $fileuploader, File $file): Response
-    {
-        return $this->response("test");
         $token = $request->headers->get('JWT-Token');
         $decodedToken = $this->jwtDecode($token);
 
         $username = $decodedToken['username'];
 
-        $fileData = $request->get('file')->getData();
+        $filesList = $fileRepository->findBy(['author' => $username]);
+
+        foreach ($filesList as $file) {
+            $array = [
+                "id" => $file->getId(),
+                "displayName" => $file->getDisplayName(),
+                "dateCreate" => $file->getDateCreate()
+            ];
+
+            $result[] = $array;
+        }
+
+        return $this->response($result);
+    }
+
+    /**
+     * @Route("/{id}", name="get_file", methods={"GET"})
+     */
+    public function getFile(Request $request, FileRepository $fileRepository, $id): Response
+    {
+        $token = $request->headers->get('JWT-Token');
+        $decodedToken = $this->jwtDecode($token);
+
+        $username = $decodedToken['username'];
+
+        $file = $fileRepository->findOneBy(['id' => $id]);
+
+        if(!$file) {
+            return $this->response([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'success' => "Invalid file id",
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if($file->getAuthor() !== $username) {
+            return $this->response([
+                'status' => Response::HTTP_FORBIDDEN,
+                'success' => "Not authorized",
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $responsedFile = $this->getParameter('files_directory').'/'.$file->getSafeName();
+        return new BinaryFileResponse($responsedFile);
+    }
+
+    /**
+     * @Route("/{displayFileName}", name="upload_file", methods={"POST"})
+     */
+    public function uploadFile($displayFileName, Request $request, FileUploader $fileUploader): Response
+    {
+        $token = $request->headers->get('JWT-Token');
+        $decodedToken = $this->jwtDecode($token);
+
+        $username = $decodedToken['username'];
+
+        $fileData = $request->files->get('file');
         if ($fileData) {
             $fileName = $fileUploader->upload($fileData);
 
@@ -71,8 +107,9 @@ class FileController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $file = new File;
-            $file->setName($fileName);
-            $file->setDateCreate(new \Date('now'));
+            $file->setSafeName($fileName);
+            $file->setDisplayName($displayFileName);
+            $file->setDateCreate(new \DateTime('now'));
             $file->setAuthor($username);
 
             $entityManager->persist($file);

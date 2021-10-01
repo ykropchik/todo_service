@@ -22,7 +22,12 @@ class File
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $safeName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $displayName;
 
     /**
      * @ORM\Column(type="date")
@@ -39,14 +44,26 @@ class File
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getSafeName(): ?string
     {
-        return $this->name;
+        return $this->safeName;
     }
 
-    public function setName(string $name): self
+    public function setSafeName(string $safeName): self
     {
-        $this->name = $name;
+        $this->safeName = $safeName;
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }
