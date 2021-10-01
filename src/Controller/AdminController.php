@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\FileRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +48,40 @@ class AdminController extends AbstractController
                 "id" => $user->getId(),
                 "username" => $user->getUsername(),
                 "password" => $user->getPassword()
+            ];
+
+            $result[] = $array;
+        }
+
+        return $this->response($result);
+    }
+
+    /**
+     * @Route("/getFilesInfo", name="getFilesInfo", methods={"GET"})
+     */
+    public function getFilesInfo(Request $request, FileRepository $fileRepository): Response
+    {
+        $token = $request->headers->get('JWT-Token');
+        $decodedToken = $this->jwtDecode($token);
+
+        $roles = $decodedToken['roles'];
+
+        if(!in_array('ROLE_ADMIN', $roles)) {
+            return $this->response([
+                'status' => Response::HTTP_FORBIDDEN,
+                'success' => "Not authorized",
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $filesList = $fileRepository->findAll();
+
+        foreach ($filesList as $file) {
+            $array = [
+                "id" => $file->getId(),
+                "safeName" => $file->getSafeName(),
+                "displayName" => $file->getDisplayName(),
+                "author" => $file->getAuthor(),
+                "date" => $file->getDateCreate()
             ];
 
             $result[] = $array;
