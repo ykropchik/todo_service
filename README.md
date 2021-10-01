@@ -57,6 +57,13 @@
 </details>
 
 <details>
+   <summary>Запрос на удаление файла</summary>
+
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/removeFile.png)
+    
+</details>
+
+<details>
    <summary>Запрос на получения списка файлов</summary>
 
   ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getFilesList.png)
