@@ -41,3 +41,24 @@
   ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/itemRemove.png)
     
 </details>
+
+<details>
+  <summary>Запрос на добавление файла</summary>
+
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/uploadFile.png)
+    
+</details>
+
+<details>
+   <summary>Запрос на получение файла</summary>
+
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getFile.png)
+    
+</details>
+
+<details>
+   <summary>Запрос на получения списка файлов</summary>
+
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getFilesList.png)
+    
+</details>
