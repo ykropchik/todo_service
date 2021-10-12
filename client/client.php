@@ -1,11 +1,35 @@
 #!/usr/bin/env
 <?php
 
-class TodoService {
-    private string $path;
+class ResponseResult {
+    private $statusCode;
+    private $data;
 
-    public function __construct(string $path) {
-        $this->path = $path;
+    public function __construct($statusCode, $data) {
+        $this->statusCode = $statusCode;
+        $this->data = $data;
+    }
+
+    public function getStatusCode() {
+        return $this->statusCode;
+    } 
+    
+    public function getData() {
+        return $this->data;
+    } 
+}
+
+class TodoService {
+    private string $apiURL;
+    private string $jwtToken;
+
+    public function __construct(string $apiURL, string $jwtToken = null) {
+        $this->apiURL = $apiURL;
+        $this->jwtToken = $jwtToken;
+    }
+
+    public function getJWT() {
+        return $this->jwtToken;
     }
 
     public function registration(string $username, string $password) {
@@ -14,14 +38,21 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/registration',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/registration',
                 CURLOPT_HTTPHEADER => array('Content-type: application/json', 'Content-Length: '.strlen($data)),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+    
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 
     public function auth(string $username, string $password) {
@@ -30,58 +61,86 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/api/login_check',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/api/login_check',
                 CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data)),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+         
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 
-    public function getTodoList(string $jwt) {
+    public function getTodoList() {
         $request = curl_init();
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/todo/',
-                CURLOPT_HTTPHEADER => array('JWT-Token: '.$jwt),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/todo/',
+                CURLOPT_HTTPHEADER => array('JWT-Token: '.$this->jwtToken),
                 CURLOPT_CUSTOMREQUEST => 'GET'
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 
-    public function createItem(string $jwt, string $name, string $description) {
+    public function createItem(string $name, string $description) {
         $data = json_encode(['name' => $name, 'description' => $description], JSON_UNESCAPED_UNICODE);
         $request = curl_init();
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/todo/',
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$jwt),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/todo/',
+                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$this->jwtToken),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+        
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 
-    public function itemRemove(string $jwt, int $id) {
+    public function itemRemove(int $id) {
         $request = curl_init();
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/todo/'.$id,
-                CURLOPT_HTTPHEADER => array('JWT-Token: '.$jwt),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/todo/'.$id,
+                CURLOPT_HTTPHEADER => array('JWT-Token: '.$this->jwtToken),
                 CURLOPT_CUSTOMREQUEST => 'DELETE'
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+        
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 
     public function itemUpdate(int $id, string $name, string $description, bool $isDone) {
@@ -90,16 +149,23 @@ class TodoService {
         curl_setopt_array(
             $request, 
             array(
-                CURLOPT_URL => $this->path.'/todo/'.$id,
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data)),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/todo/'.$id,
+                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$this->jwtToken),
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_POSTFIELDS => $data
             ));
-        $result = curl_exec($request);
-        curl_close($request);
-        return $result;
+        
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
     }
 }
 
-// $todoService = new TodoService("http://138.197.185.17");
-// echo $todoService->getTodoList("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
+// $todoService = new TodoService("http://138.197.185.17", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
+// $result = $todoService->getTodoList();

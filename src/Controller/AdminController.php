@@ -74,6 +74,7 @@ class AdminController extends AbstractController
         }
 
         $filesList = $fileRepository->findAll();
+        $result = [];
 
         foreach ($filesList as $file) {
             $array = [
