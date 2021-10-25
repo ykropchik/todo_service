@@ -142,6 +142,7 @@ class FileController extends AbstractController
         $username = $decodedToken['username'];
 
         $fileData = $request->files->get('file');
+        // return  $this->response($fileData);
         if ($fileData) {
             $fileName = $fileUploader->upload($fileData);
 
@@ -161,11 +162,16 @@ class FileController extends AbstractController
 
             $entityManager->persist($file);
             $entityManager->flush();
+
+            return $this->response([
+                'status' => Response::HTTP_OK,
+                'success' => "File upload successfully",
+            ]);
         }
 
         return $this->response([
-            'status' => Response::HTTP_OK,
-            'success' => "File upload successfully",
-        ]);
+            'status' => Response::HTTP_BAD_REQUEST,
+            'success' => "Invalid data",
+        ], Response::HTTP_BAD_REQUEST);
     }
 }

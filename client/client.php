@@ -23,7 +23,7 @@ class TodoService {
     private string $apiURL;
     private string $jwtToken;
 
-    public function __construct(string $apiURL, string $jwtToken = null) {
+    public function __construct(string $apiURL, string $jwtToken = '') {
         $this->apiURL = $apiURL;
         $this->jwtToken = $jwtToken;
     }
@@ -40,7 +40,10 @@ class TodoService {
             array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_URL => $this->apiURL.'/registration',
-                CURLOPT_HTTPHEADER => array('Content-type: application/json', 'Content-Length: '.strlen($data)),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-type: application/json', 
+                    'Content-Length: '.strlen($data)
+                ),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
@@ -63,7 +66,10 @@ class TodoService {
             array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_URL => $this->apiURL.'/api/login_check',
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data)),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json', 
+                    'Content-Length: '.strlen($data)
+                ),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
@@ -107,7 +113,11 @@ class TodoService {
             array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_URL => $this->apiURL.'/todo/',
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$this->jwtToken),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json', 
+                    'Content-Length: '.strlen($data), 
+                    'JWT-Token: '.$this->jwtToken
+                ),
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => $data
             ));
@@ -151,7 +161,11 @@ class TodoService {
             array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_URL => $this->apiURL.'/todo/'.$id,
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Content-Length: '.strlen($data), 'JWT-Token: '.$this->jwtToken),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Content-Length: '.strlen($data),
+                    'JWT-Token: '.$this->jwtToken
+                ),
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_POSTFIELDS => $data
             ));
@@ -165,7 +179,101 @@ class TodoService {
 
         return new ResponseResult($http_code, $data);
     }
+
+    public function uploadFile(string $saveName, string $filePath) {
+        if(!file_exists(realpath($filePath))) {
+            throw new Exception('File did not exist');
+        }
+        
+        $request = curl_init();
+
+        curl_setopt_array(
+            $request, 
+            array(
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/file/'.$saveName,
+                CURLOPT_HTTPHEADER => array(
+                    'JWT-Token: '.$this->jwtToken,
+                ),
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array('file' => new CurlFile($filePath))
+            )
+        );
+        
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
+    }
+
+    public function getFilesList() {
+        $request = curl_init();
+        curl_setopt_array(
+            $request, 
+            array(
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/file/',
+                CURLOPT_HTTPHEADER => array('JWT-Token: '.$this->jwtToken),
+                CURLOPT_CUSTOMREQUEST => 'GET'
+            ));
+
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
+    }
+
+    public function getFile(int $fileId) {
+        $request = curl_init();
+        curl_setopt_array(
+            $request, 
+            array(
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/file/'.$fileId,
+                CURLOPT_HTTPHEADER => array('JWT-Token: '.$this->jwtToken),
+                CURLOPT_CUSTOMREQUEST => 'GET'
+            ));
+
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
+    }
+
+    public function deleteFile(int $fileId) {
+        $request = curl_init();
+        curl_setopt_array(
+            $request, 
+            array(
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $this->apiURL.'/file/'.$fileId,
+                CURLOPT_HTTPHEADER => array('JWT-Token: '.$this->jwtToken),
+                CURLOPT_CUSTOMREQUEST => 'DELETE'
+            ));
+        
+        try {
+            $data = curl_exec($request);
+            $http_code = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+        } finally {
+            curl_close($request);
+        }
+
+        return new ResponseResult($http_code, $data);
+    }
 }
 
-// $todoService = new TodoService("http://138.197.185.17", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
-// $result = $todoService->getTodoList();
+$todoService = new TodoService("http://138.197.185.17", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
+$result = $todoService->deleteFile(7);
+echo $result->getData();
