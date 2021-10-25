@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
+use App\Encoder\NixillaJWTEncoder;
 use App\Repository\FileRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Encoder\NixillaJWTEncoder;
 
 class AdminController extends AbstractController
 {
@@ -20,7 +20,8 @@ class AdminController extends AbstractController
 
     protected function jwtDecode(string $token): array
     {
-        $decoder = new NixillaJWTEncoder;
+        $decoder = new NixillaJWTEncoder();
+
         return $decoder->decode($token);
     }
 
@@ -34,10 +35,10 @@ class AdminController extends AbstractController
 
         $roles = $decodedToken['roles'];
 
-        if(!in_array('ROLE_ADMIN', $roles)) {
+        if (!in_array('ROLE_ADMIN', $roles)) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -45,9 +46,9 @@ class AdminController extends AbstractController
 
         foreach ($userList as $user) {
             $array = [
-                "id" => $user->getId(),
-                "username" => $user->getUsername(),
-                "password" => $user->getPassword()
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'password' => $user->getPassword(),
             ];
 
             $result[] = $array;
@@ -66,10 +67,10 @@ class AdminController extends AbstractController
 
         $roles = $decodedToken['roles'];
 
-        if(!in_array('ROLE_ADMIN', $roles)) {
+        if (!in_array('ROLE_ADMIN', $roles)) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -78,11 +79,11 @@ class AdminController extends AbstractController
 
         foreach ($filesList as $file) {
             $array = [
-                "id" => $file->getId(),
-                "safeName" => $file->getSafeName(),
-                "displayName" => $file->getDisplayName(),
-                "author" => $file->getAuthor(),
-                "date" => $file->getDateCreate()
+                'id' => $file->getId(),
+                'safeName' => $file->getSafeName(),
+                'displayName' => $file->getDisplayName(),
+                'author' => $file->getAuthor(),
+                'date' => $file->getDateCreate(),
             ];
 
             $result[] = $array;

@@ -21,12 +21,12 @@ class FileUploader
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = 'todoService-'.uniqid().'.'.$file->guessExtension();
+        $fileName = 'todoService-' . uniqid() . '.' . $file->guessExtension();
 
         try {
             $file->move($this->targetDirectory, $fileName);
         } catch (FileException $e) {
-            return "Error";
+            return 'Error';
         }
 
         return $fileName;
