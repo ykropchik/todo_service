@@ -2,15 +2,14 @@
 
 namespace App\Controller;
 
+use App\Encoder\NixillaJWTEncoder;
 use App\Entity\TodoItem;
-use App\Form\TodoItem1Type;
 use App\Repository\TodoItemRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Encoder\NixillaJWTEncoder;
 
 /**
  * @Route("/todo")
@@ -25,16 +24,18 @@ class TodoItemController extends AbstractController
     protected function transformJsonBody(Request $request): Request
     {
         $data = json_decode($request->getContent(), true);
-        if ($data === null) {
+        if (null === $data) {
             return $request;
         }
         $request->request->replace($data);
+
         return $request;
     }
 
     protected function jwtDecode(string $token): array
     {
-        $decoder = new NixillaJWTEncoder;
+        $decoder = new NixillaJWTEncoder();
+
         return $decoder->decode($token);
     }
 
@@ -53,11 +54,11 @@ class TodoItemController extends AbstractController
 
         foreach ($todoList as $todoItem) {
             $array = [
-                "id" => $todoItem->getId(),
-                "name" => $todoItem->getName(),
-                "description" => $todoItem->getDescription(),
-                "dateCreate" => $todoItem->getDateCreate(),
-                "isDone" => $todoItem->getIsDone()
+                'id' => $todoItem->getId(),
+                'name' => $todoItem->getName(),
+                'description' => $todoItem->getDescription(),
+                'dateCreate' => $todoItem->getDateCreate(),
+                'isDone' => $todoItem->getIsDone(),
             ];
 
             $result[] = $array;
@@ -90,7 +91,7 @@ class TodoItemController extends AbstractController
 
         return $this->response([
             'status' => Response::HTTP_OK,
-            'success' => "Item added successfully",
+            'success' => 'Item added successfully',
         ]);
     }
 
@@ -104,17 +105,17 @@ class TodoItemController extends AbstractController
         $username = $decodedToken['username'];
         $todoItem = $todoItemRepository->find($id);
 
-        if(!$todoItem) {
+        if (!$todoItem) {
             return $this->response([
                 'status' => Response::HTTP_NOT_FOUND,
-                'success' => "Item not found",
+                'success' => 'Item not found',
             ], Response::HTTP_NOT_FOUND);
         }
 
-        if($todoItem->getAuthor() !== $username) {
+        if ($todoItem->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -123,10 +124,10 @@ class TodoItemController extends AbstractController
         $description = $requestBody->get('description');
         $isDone = $requestBody->get('isDone');
 
-        if(!$name && !$description && $isDone) {
+        if (!$name && !$description && $isDone) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => "Invalid data",
+                'success' => 'Invalid data',
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -140,7 +141,7 @@ class TodoItemController extends AbstractController
 
         return $this->response([
             'status' => Response::HTTP_OK,
-            'success' => "Item updated successfully",
+            'success' => 'Item updated successfully',
         ]);
     }
 
@@ -154,17 +155,17 @@ class TodoItemController extends AbstractController
         $username = $decodedToken['username'];
         $todoItem = $todoItemRepository->find($id);
 
-        if(!$todoItem) {
+        if (!$todoItem) {
             return $this->response([
                 'status' => Response::HTTP_NOT_FOUND,
-                'success' => "Item not found",
+                'success' => 'Item not found',
             ], Response::HTTP_NOT_FOUND);
         }
 
-        if($todoItem->getAuthor() !== $username) {
+        if ($todoItem->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -174,7 +175,7 @@ class TodoItemController extends AbstractController
 
         return $this->response([
             'status' => Response::HTTP_OK,
-            'success' => "Item removed successfully",
+            'success' => 'Item removed successfully',
         ]);
     }
 }

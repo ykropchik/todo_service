@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
+use App\Encoder\NixillaJWTEncoder;
 use App\Entity\File;
-use App\Service\FileUploader;
 use App\Repository\FileRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use App\Encoder\NixillaJWTEncoder;
 
 /**
  * @Route("/file")
@@ -27,7 +27,8 @@ class FileController extends AbstractController
 
     protected function jwtDecode(string $token): array
     {
-        $decoder = new NixillaJWTEncoder;
+        $decoder = new NixillaJWTEncoder();
+
         return $decoder->decode($token);
     }
 
@@ -45,9 +46,9 @@ class FileController extends AbstractController
 
         foreach ($filesList as $file) {
             $array = [
-                "id" => $file->getId(),
-                "displayName" => $file->getDisplayName(),
-                "dateCreate" => $file->getDateCreate()
+                'id' => $file->getId(),
+                'displayName' => $file->getDisplayName(),
+                'dateCreate' => $file->getDateCreate(),
             ];
 
             $result[] = $array;
@@ -68,21 +69,22 @@ class FileController extends AbstractController
 
         $file = $fileRepository->findOneBy(['id' => $id]);
 
-        if(!$file) {
+        if (!$file) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => "Invalid file id",
+                'success' => 'Invalid file id',
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        if($file->getAuthor() !== $username) {
+        if ($file->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $responsedFile = $this->getParameter('files_directory').'/'.$file->getSafeName();
+        $responsedFile = $this->getParameter('files_directory') . '/' . $file->getSafeName();
+
         return new BinaryFileResponse($responsedFile);
     }
 
@@ -98,27 +100,27 @@ class FileController extends AbstractController
 
         $file = $fileRepository->findOneBy(['id' => $id]);
 
-        if(!$file) {
+        if (!$file) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => "Invalid file id",
+                'success' => 'Invalid file id',
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        if($file->getAuthor() !== $username) {
+        if ($file->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => "Not authorized",
+                'success' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
         $filesystem = new Filesystem();
         try {
-            $filesystem->remove([$this->getParameter('files_directory').'/'.$file->getSafeName()]);
+            $filesystem->remove([$this->getParameter('files_directory') . '/' . $file->getSafeName()]);
         } catch (IOExceptionInterface $exception) {
             return $this->response([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'success' => "Something went wrong",
+                'success' => 'Something went wrong',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $entityManager = $this->getDoctrine()->getManager();
@@ -127,7 +129,7 @@ class FileController extends AbstractController
 
         return $this->response([
             'status' => Response::HTTP_OK,
-            'success' => "Item removed successfully",
+            'success' => 'Item removed successfully',
         ]);
     }
 
@@ -146,15 +148,15 @@ class FileController extends AbstractController
         if ($fileData) {
             $fileName = $fileUploader->upload($fileData);
 
-            if($fileName === "Error") {
+            if ('Error' === $fileName) {
                 return $this->response([
                     'status' => Response::HTTP_BAD_REQUEST,
-                    'success' => "Invalid data",
+                    'success' => 'Invalid data',
                 ], Response::HTTP_BAD_REQUEST);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
-            $file = new File;
+            $file = new File();
             $file->setSafeName($fileName);
             $file->setDisplayName($displayFileName);
             $file->setDateCreate(new \DateTime('now'));
@@ -165,13 +167,13 @@ class FileController extends AbstractController
 
             return $this->response([
                 'status' => Response::HTTP_OK,
-                'success' => "File upload successfully",
+                'success' => 'File upload successfully',
             ]);
         }
 
         return $this->response([
             'status' => Response::HTTP_BAD_REQUEST,
-            'success' => "Invalid data",
+            'success' => 'Invalid data',
         ], Response::HTTP_BAD_REQUEST);
     }
 }

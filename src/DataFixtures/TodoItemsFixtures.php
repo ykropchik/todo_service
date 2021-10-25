@@ -10,9 +10,9 @@ class TodoItemsFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $todoList = array("First todo", "SecondTodo", "3-rd TODO");
+        $todoList = ['First todo', 'SecondTodo', '3-rd TODO'];
 
-        for ($i = 0; $i < count($todoList); $i++) { 
+        for ($i = 0; $i < count($todoList); ++$i) {
             $todoItem = new TodoItem();
             $date = new \DateTime(date('Y-m-d H:i:s', strtotime(rand(1609459200, 1632614400))));
             $todoItem
@@ -24,6 +24,6 @@ class TodoItemsFixtures extends Fixture
 
             $manager->persist($todoItem);
             $manager->flush();
-        }        
+        }
     }
 }
