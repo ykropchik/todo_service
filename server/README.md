@@ -212,6 +212,26 @@
   ```
     
   </details>
+
+  <details>
+    <summary>PHPMD</summary>
+
+  ```bash
+  root@ubuntu-s-1vcpu-1gb-fra1-01:/var/www/todo_service/server# vendor/bin/phpmd src text cleancode
+  /var/www/todo_service/server/src/Controller/FileController.php:170      Missing class import via use statement (line '170', column '38').
+  /var/www/todo_service/server/src/Controller/SecurityController.php:34   Missing class import via use statement (line '34', column '19').
+  /var/www/todo_service/server/src/Controller/TodoItemController.php:87   Missing class import via use statement (line '87', column '38').
+  /var/www/todo_service/server/src/DataFixtures/TodoItemsFixtures.php:17  Missing class import via use statement (line '17', column '25').
+  /var/www/todo_service/server/src/DataFixtures/TodoItemsFixtures.php:22  Missing class import via use statement (line '22', column '37').
+  /var/www/todo_service/server/src/Encoder/NixillaJWTEncoder.php:25       Avoid using static access to class '\JWT\Authentication\JWT' in method 'encode'.
+  /var/www/todo_service/server/src/Encoder/NixillaJWTEncoder.php:37       Avoid using static access to class '\JWT\Authentication\JWT' in method 'decode'.
+  /var/www/todo_service/server/src/Kernel.php:22  The method configureContainer uses an else expression. Else clauses are basically not necessary and you can simplify the code by not using them.
+  /var/www/todo_service/server/src/Kernel.php:34  The method configureRoutes uses an else expression. Else clauses are basically not necessary and you can simplify the code by not using them.
+  /var/www/todo_service/server/src/Security/UserAuthenticator.php:47      Avoid assigning values to variables in if clauses and the like (line '49', column '13').
+  /var/www/todo_service/server/src/Security/UserAuthenticator.php:55      Missing class import via use statement (line '55', column '19').
+  ```
+
+  </details>
   
   </details>
   
@@ -229,6 +249,18 @@
   ![PHPCS-after](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-after-allfixes.png)
   ![PHP-ECS-after](https://github.com/ykropchik/todo_service/blob/main/imgs/php-ecs-after.png)
   ![PHPSTAN-after](https://github.com/ykropchik/todo_service/blob/main/imgs/phpstan-after.png)
+
+  <details>
+    <summary>PHPMD</summary>
+
+  ```bash
+  root@ubuntu-s-1vcpu-1gb-fra1-01:/var/www/todo_service/server# vendor/bin/phpmd src text unusedcode
+  /var/www/todo_service/server/src/Security/UserAuthenticator.php:47      Avoid unused parameters such as '$token'.
+  /var/www/todo_service/server/src/Security/UserAuthenticator.php:58      Avoid unused parameters such as '$request'.
+  /var/www/todo_service/server/src/Service/FileUploader.php:22    Avoid unused local variables such as '$originalFilename'.
+  ```
+
+  </details>
     
   </details>
   
