@@ -1,23 +1,8 @@
-#!/usr/bin/env
 <?php
 
-class ResponseResult {
-    private $statusCode;
-    private $data;
+namespace Client;
 
-    public function __construct($statusCode, $data) {
-        $this->statusCode = $statusCode;
-        $this->data = $data;
-    }
-
-    public function getStatusCode() {
-        return $this->statusCode;
-    } 
-    
-    public function getData() {
-        return $this->data;
-    } 
-}
+use Client\ResponseResult;
 
 class TodoService {
     private string $apiURL;
@@ -273,7 +258,3 @@ class TodoService {
         return new ResponseResult($http_code, $data);
     }
 }
-
-$todoService = new TodoService("http://138.197.185.17", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoieWtyb3BjaGlrIn0.YyHP88IInsa5bsbkX6Tmu3k7I7jtONwp-YHBcStU7bc");
-$result = $todoService->deleteFile(7);
-echo $result->getData();
