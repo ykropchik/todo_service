@@ -24,11 +24,7 @@ class NixillaJWTEncoder implements JWTEncoderInterface
         try {
             return JWT::encode($data, $this->key);
         } catch (\Exception $e) {
-            throw new JWTEncodeFailureException(
-                JWTEncodeFailureException::INVALID_CONFIG,
-                'An error occurred while trying to encode the JWT token.',
-                $e
-            );
+            throw new JWTEncodeFailureException(JWTEncodeFailureException::INVALID_CONFIG, 'An error occurred while trying to encode the JWT token.', $e);
         }
     }
 

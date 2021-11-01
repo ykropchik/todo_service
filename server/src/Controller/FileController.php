@@ -43,6 +43,7 @@ class FileController extends AbstractController
         $username = $decodedToken['username'];
 
         $filesList = $fileRepository->findBy(['author' => $username]);
+        $result = [];
 
         foreach ($filesList as $file) {
             $array = [

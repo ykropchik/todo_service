@@ -43,6 +43,7 @@ class AdminController extends AbstractController
         }
 
         $userList = $userRepository->findAll();
+        $result = [];
 
         foreach ($userList as $user) {
             $array = [

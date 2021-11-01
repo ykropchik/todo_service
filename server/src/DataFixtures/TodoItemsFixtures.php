@@ -14,7 +14,6 @@ class TodoItemsFixtures extends Fixture
 
         for ($i = 0; $i < count($todoList); ++$i) {
             $todoItem = new TodoItem();
-            $date = new \DateTime(date('Y-m-d H:i:s', strtotime(rand(1609459200, 1632614400))));
             $todoItem
                 ->setAuthor('ykropchik')
                 ->setName($i)

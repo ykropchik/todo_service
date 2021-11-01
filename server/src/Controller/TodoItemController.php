@@ -48,9 +48,8 @@ class TodoItemController extends AbstractController
         $decodedToken = $this->jwtDecode($token);
 
         $username = $decodedToken['username'];
-        $roles = $decodedToken['roles'];
-
         $todoList = $todoItemRepository->findBy(['author' => $username]);
+        $result = [];
 
         foreach ($todoList as $todoItem) {
             $array = [

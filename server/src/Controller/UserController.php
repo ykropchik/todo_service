@@ -46,7 +46,6 @@ class UserController extends AbstractController
         UserRepository $userRepository,
         UserPasswordHasherInterface $passwordEncoder
     ): Response {
-        $requestBody = $this->transformJsonBody($request);
         $username = $request->get('username');
         $password = $request->get('password');
 
