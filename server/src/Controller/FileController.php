@@ -72,14 +72,14 @@ class FileController extends AbstractController
         if (!$file) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => 'Invalid file id',
+                'message' => 'Invalid file id',
             ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($file->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => 'Not authorized',
+                'message' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -103,14 +103,14 @@ class FileController extends AbstractController
         if (!$file) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => 'Invalid file id',
+                'message' => 'Invalid file id',
             ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($file->getAuthor() !== $username) {
             return $this->response([
                 'status' => Response::HTTP_FORBIDDEN,
-                'success' => 'Not authorized',
+                'message' => 'Not authorized',
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -120,7 +120,7 @@ class FileController extends AbstractController
         } catch (IOExceptionInterface $exception) {
             return $this->response([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'success' => 'Something went wrong',
+                'message' => 'Something went wrong',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $entityManager = $this->getDoctrine()->getManager();
@@ -129,7 +129,7 @@ class FileController extends AbstractController
 
         return $this->response([
             'status' => Response::HTTP_OK,
-            'success' => 'Item removed successfully',
+            'message' => 'Item removed successfully',
         ]);
     }
 
@@ -146,12 +146,19 @@ class FileController extends AbstractController
         $fileData = $request->files->get('file');
         // return  $this->response($fileData);
         if ($fileData) {
-            $fileName = $fileUploader->upload($fileData);
+            try {
+                $fileName = $fileUploader->upload($fileData);
+            } catch (Exception $error) {
+                return $this->response([
+                    'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'message' => 'Something went wrong',
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
 
             if ('Error' === $fileName) {
                 return $this->response([
                     'status' => Response::HTTP_BAD_REQUEST,
-                    'success' => 'Invalid data',
+                    'message' => 'Invalid data',
                 ], Response::HTTP_BAD_REQUEST);
             }
 
@@ -167,13 +174,13 @@ class FileController extends AbstractController
 
             return $this->response([
                 'status' => Response::HTTP_OK,
-                'success' => 'File upload successfully',
+                'message' => 'File upload successfully',
             ]);
         }
 
         return $this->response([
             'status' => Response::HTTP_BAD_REQUEST,
-            'success' => 'Invalid data',
+            'message' => 'Invalid data',
         ], Response::HTTP_BAD_REQUEST);
     }
 }
