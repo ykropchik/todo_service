@@ -5,14 +5,14 @@
 <details>
   <summary>Запрос на регистрацию</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/registration.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/registration.png)
     
 </details>
 
 <details>
   <summary>Запрос на авторизацию</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/auth.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/auth.png)
     
 </details>
   <summary>Запросы</summary>
@@ -20,56 +20,56 @@
 <details>
   <summary>Запрос списка todo</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getTodoList.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/getTodoList.png)
   
 </details>
 
 <details>
   <summary>Запрос на добавление todo</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/createTodoItem.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/createTodoItem.png)
     
 </details>
 
 <details>
    <summary>Запрос на изменение todo</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/itemUpdate.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/itemUpdate.png)
     
 </details>
 
 <details>
    <summary>Запрос на удаление todo</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/itemRemove.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/itemRemove.png)
     
 </details>
 
 <details>
   <summary>Запрос на добавление файла</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/uploadFile.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/uploadFile.png)
     
 </details>
 
 <details>
    <summary>Запрос на получение файла</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getFile.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/getFile.png)
     
 </details>
 
 <details>
    <summary>Запрос на удаление файла</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/removeFile.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/removeFile.png)
     
 </details>
 
 <details>
    <summary>Запрос на получения списка файлов</summary>
 
-  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/imgs/getFilesList.png)
+  ![Авторизация](https://github.com/ykropchik/todo_service/blob/main/server/imgs/getFilesList.png)
     
 </details>
   
@@ -81,11 +81,11 @@
   <details>
    <summary>До исправлений</summary>
 
-  ![PHPSTAN-before](https://github.com/ykropchik/todo_service/blob/main/imgs/phpstan-before.png)
-  ![PHPCS-before-part1](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-before-part1.png)
-  ![PHPCS-before-part2](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-before-part2.png)
-  ![PHPCS-before-part3](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-before-part3.png)
-  ![PHPCS-before-part4](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-before-part4.png)
+  ![PHPSTAN-before](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpstan-before.png)
+  ![PHPCS-before-part1](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcs-before-part1.png)
+  ![PHPCS-before-part2](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcs-before-part2.png)
+  ![PHPCS-before-part3](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcs-before-part3.png)
+  ![PHPCS-before-part4](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcs-before-part4.png)
 
   <details>
     <summary>PHP-ECS</summary>
@@ -238,17 +238,17 @@
   <details>
    <summary>Исправления</summary>
 
-  ![PHPCBF-use](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcbf-use.png)
-  ![PHP-CS](https://github.com/ykropchik/todo_service/blob/main/imgs/php-cs-fixer.png)
+  ![PHPCBF-use](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcbf-use.png)
+  ![PHP-CS](https://github.com/ykropchik/todo_service/blob/main/server/imgs/php-cs-fixer.png)
     
   </details>
   
   <details>
     <summary>После исправлений</summary>
 
-  ![PHPCS-after](https://github.com/ykropchik/todo_service/blob/main/imgs/phpcs-after-allfixes.png)
-  ![PHP-ECS-after](https://github.com/ykropchik/todo_service/blob/main/imgs/php-ecs-after.png)
-  ![PHPSTAN-after](https://github.com/ykropchik/todo_service/blob/main/imgs/phpstan-after.png)
+  ![PHPCS-after](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpcs-after-allfixes.png)
+  ![PHP-ECS-after](https://github.com/ykropchik/todo_service/blob/main/server/imgs/php-ecs-after.png)
+  ![PHPSTAN-after](https://github.com/ykropchik/todo_service/blob/main/server/imgs/phpstan-after.png)
 
   <details>
     <summary>PHPMD</summary>
