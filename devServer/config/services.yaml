@@ -31,3 +31,7 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%files_directory%'
+
+    App\Service\HealthService:
+        arguments:
+            $envName: '%kernel.environment%'
