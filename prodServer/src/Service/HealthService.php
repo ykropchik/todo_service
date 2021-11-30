@@ -11,7 +11,8 @@ class HealthService
         $this->envName = $envName;
     }
 
-    public function getEnvName() {
+    public function getEnvName()
+    {
         return $this->envName;
     }
 }
