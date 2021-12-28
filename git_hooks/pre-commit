@@ -1,4 +1,3 @@
 #!/bin/bash
-devServer/vendor/bin/php-cs-fixer fix devServer/src
-prodServer/vendor/bin/php-cs-fixer fix prodServer/src
+vendor/bin/php-cs-fixer fix src
 git add .
