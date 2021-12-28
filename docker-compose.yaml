@@ -3,12 +3,12 @@ version: "3.7"
 services:
   nginx:
     build:
-      context: Server
+      context: /
       dockerfile: docker/nginx/Dockerfile
     working_dir: /app
     restart: on-failure
     volumes:
-      - ./Server:/app:delegated
+      - ./app:delegated
     depends_on:
       - 'php-fpm'
     ports:
@@ -19,7 +19,7 @@ services:
 
   php-fpm:
     build:
-      context: Server
+      context: /
       dockerfile: docker/php/Dockerfile
       target: stateful
       args:
@@ -28,7 +28,7 @@ services:
     working_dir: /app
     restart: on-failure
     volumes:
-      - ./Server:/app:delegated
+      - ./app:delegated
     depends_on:
       - 'mysql'
     environment:
@@ -37,6 +37,7 @@ services:
       PHP_IDE_CONFIG: "serverName=dromupgrade"
 
   mysql:
+    platform: linux/x86_64
     image: mysql:5.7.27
     command: --default-authentication-plugin=mysql_native_password
     restart: always
