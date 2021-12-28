@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#test
 #git reset --hard HEAD
 git pull
 
