@@ -285,5 +285,6 @@
 <details>
     <summary>Git hooks proofs</summary>
 
-  ![proof](https://github.com/ykropchik/todo_service/blob/main/imgs/deploy_proof.png)
+  ![proof 1](https://github.com/ykropchik/todo_service/blob/main/imgs/git-hooks-proof-1.png)
+  ![proof 1](https://github.com/ykropchik/todo_service/blob/main/imgs/git-hooks-proof-2.png)
 </details>
