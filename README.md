@@ -275,3 +275,9 @@
   http://138.197.185.17:90/health - dev
   http://138.197.185.17:80/health - prod
 </details>
+
+<details>
+    <summary>Prod и Dev deploy</summary>
+
+  ![PHPSTAN-after](https://github.com/ykropchik/todo_service/blob/main/imgs/deploy_proof.png)
+</details>
