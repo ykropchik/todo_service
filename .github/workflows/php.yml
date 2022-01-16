@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Change work dir
-      run: cd server/
+      run: cd server/ && ls -la && ls -la ../
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
