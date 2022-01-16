@@ -1,0 +1,7 @@
+#!/bin/bash
+
+commitRegex='^(\[#[0-9]+\].+)'
+if ! grep -qE "$commitRegex" "$1"; then
+    echo "Invalid commit message. Expected [#*number*] *Commit message*"
+    exit 1
+fi
