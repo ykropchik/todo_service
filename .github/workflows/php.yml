@@ -10,15 +10,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Change work dir
-      run: cd server/ && ls -la && ls -la ../
 
     - name: Validate composer.json and composer.lock
-      run: ls -la && composer validate --strict
+      run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
