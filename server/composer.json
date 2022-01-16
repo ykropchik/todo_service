@@ -1,4 +1,6 @@
 {
+    "name": "todo_service",
+    "description": "fucking todo_service",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
