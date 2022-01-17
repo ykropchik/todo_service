@@ -33,7 +33,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
       
     - name: Use PHPstan
-      run: vendor/bin/phpstan anylyse -l 1 src
+      run: vendor/bin/phpstan analyse -l 1 src
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
