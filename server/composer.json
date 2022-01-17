@@ -50,6 +50,9 @@
         }
     },
     "autoload": {
+        "classmap": [
+            "src/"
+        ],
         "psr-4": {
             "App\\": "src/"
         }
@@ -90,8 +93,12 @@
         "friendsofphp/php-cs-fixer": "^3.2",
         "phpmd/phpmd": "^2.10",
         "phpstan/phpstan": "^0.12.99",
+        "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "*",
+        "symfony/browser-kit": "5.3.*",
+        "symfony/css-selector": "5.3.*",
         "symfony/maker-bundle": "^1.33",
+        "symfony/phpunit-bridge": "^6.0",
         "symfony/stopwatch": "5.3.*",
         "symfony/web-profiler-bundle": "5.3.*",
         "symplify/easy-coding-standard": "^9.4"
