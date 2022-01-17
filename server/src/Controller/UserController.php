@@ -49,7 +49,7 @@ class UserController extends AbstractController
         $username = $request->get('username');
         $password = $request->get('password');
 
-        if($username == null || $password == null) {
+        if ($username == null || $password == null) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
                 'success' => 'Invalid data',

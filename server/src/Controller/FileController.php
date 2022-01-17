@@ -84,7 +84,7 @@ class FileController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $responsedFile = $this->getParameter('files_directory').'/'.$file->getSafeName();
+        $responsedFile = $this->getParameter('files_directory') . '/' . $file->getSafeName();
 
         return new BinaryFileResponse($responsedFile);
     }
@@ -117,7 +117,7 @@ class FileController extends AbstractController
 
         $filesystem = new Filesystem();
         try {
-            $filesystem->remove([$this->getParameter('files_directory').'/'.$file->getSafeName()]);
+            $filesystem->remove([$this->getParameter('files_directory') . '/' . $file->getSafeName()]);
         } catch (IOExceptionInterface $exception) {
             return $this->response([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
