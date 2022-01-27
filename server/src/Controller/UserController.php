@@ -52,7 +52,7 @@ class UserController extends AbstractController
         if ($username == null || $password == null) {
             return $this->response([
                 'status' => Response::HTTP_BAD_REQUEST,
-                'success' => 'Invalid data',
+                'username' => $username,
             ], Response::HTTP_BAD_REQUEST);
         }
 
