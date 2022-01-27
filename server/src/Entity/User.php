@@ -118,4 +118,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function test($str)
+    {
+        $result = "fuck this shit, i'm out";
+        if ($str == "my bitch is full of cocain, boy") {
+            $result = "NO, it's fucking ёбаный snow!";
+        }
+
+        return $result;
+    }
 }
